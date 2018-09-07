@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, ToastAndroid } from 'react-native';
 import axios from 'axios';
-const IP = 'http://10.0.10.38:8089/';
+import {IP} from '../constants'
 
 export default class HomeScreen extends React.Component {
 
@@ -19,7 +19,7 @@ export default class HomeScreen extends React.Component {
 
         if (this.state.purpose !== null && this.state.amount !== null && this.state.name !== null && this.state.email !== null) {
            const self =  this;
-            axios.post(`http://10.0.10.38:8089/api/makerequest`,{
+            axios.post(`${IP}api/makerequest`,{
 
                 purpose: self.state.purpose,
                 amount: self.state.amount,
@@ -29,21 +29,15 @@ export default class HomeScreen extends React.Component {
             })
                 .then(function (response) {
                    console.log(response)
-                   debugger;
-
-
-
                     if (response.data.statusCode === 200) {
                         //we got success from server ,now pass it to our webview
                         ToastAndroid.show('Redirecting to payment gateway', ToastAndroid.SHORT);
-                        this.props.navigation.navigate('Webview',{url:response.data.url})
-                        
+                        self.props.navigation.navigate('Webview',{url:response.data.url})
                     }
-
-
                 })
                 .catch(function (error) {
                     console.log(JSON.stringify(error));
+                    ToastAndroid.show('Error', ToastAndroid.SHORT);
                 })
         } else {
             Alert.alert('All fields are needed');
