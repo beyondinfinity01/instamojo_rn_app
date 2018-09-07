@@ -26,7 +26,7 @@ export default class HomeScreen extends React.Component {
                 buyer_name: self.state.name,
                 email: self.state.email,
 
-            },{})
+            })
                 .then(function (response) {
                    console.log(response)
                    debugger;
